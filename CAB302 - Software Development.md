@@ -18,7 +18,7 @@ Written by Brook Jeynes (Chooky) using the QUT course content and many other sou
 		<li><a href="#week8">Week 8</a>: Test-Driven Development</li>
 		<li><a href="#week9">Week 9</a>: Collections and Generics</li>
 		<li><a href="#week10">Week 10</a>: The Integrated Build</li>
-		<li><a href="#week11">Week 11</a>: </li>
+		<li><a href="#week11">Week 11</a>: Threads</li>
 		<li><a href="#week12">Week 12</a>: </li>
 		<li><a href="#week13">Week 13</a>: </li>
 	</ul>
@@ -2202,10 +2202,90 @@ A service thread is a thread that exists in the background providing services to
 We can say a variable is thread safe, if it belongs to only one thread. Instance variables are specific to each instance of a class and, depending on the program structure, is inherently thread safe. Class variables on the other are defined statically being shared between all classes. Due to there having the chance of having more than one copy these are not considered to be thread safe. When dealing with multi-thread programs we must make sure they are thread safe. If we mismanage threads we can end up with a variety of issues such as:
 
 - Race conditions
-- Deadlock
-- Livelock
-- Starvation
+- Deadlock: In a deadlock a thread is waiting for a resource held by another blocked thread. In an instance like this there is no progress possible.
+- Livelock: In a livelock a thread acts in response to another thread, this thread makes no progress but it also isn't blocked.
+- Starvation: The concept of starvation happens when some threads are allowed to be greedy and use more items than others. This causes other threads to "starve" of resources making no progress.
 
 Race conditions occur when two threads attempt to manipulate the same variable at the same time. Changes made to variables in other threads are asynchronous changes meaning that the outcome of that variable depends on which thread gets the value first.
 
 One of the ways we can qualify shared variables is with the `volatile` keyword in Java. By doing this we essentially say that the variable in question is not accessible by other threads if it is currently being written to in some thread, we call this an Atomic variable. Access to the volatile variable will be surrounded with memory barriers ensuring that the value that variable holds is the same in every thread it's used in.
+
+```java
+public class StoppableTask extends Thread {
+	private volatile boolean pleaseStop;
+
+	public void run() {
+		while (!pleaseStop) {
+			// do something
+		}
+	}
+
+	public void tellMeToStop() {
+		pleaseStop = true;
+	}
+}
+```
+
+### Atomics
+
+As well as the `volatile` keyword we also gain access to atomic classes, operations carried out on these will happen instantaneously from the perspective of other threads. We can use them by importing `java.util.concurrent.atomic`.
+
+### Synchronization
+
+There may occur a situation where we must ensure that some threads run before others. Synchronization is all about only allowing one thread access at any given time. We can use the `synchronized` keyword to ensure that some class or object is locked.
+
+```java
+// The method (the class lock)
+public static synchronized void displayMessage(JumbledMessage jm) throws InterruptedException {
+	for (int i = 0; i < jm.message.length(); i++) {
+		System.out.print(jm.message.charAt(i));
+		Thread.currentThread().sleep(50);
+	}
+	System.out.println();
+}
+
+// The instance (the object lock)
+// Locked object must be final
+private final static Object sharedLock = new Object();
+
+public static void displayMessage(JumbledMessage jm) throws InterruptedException {
+	synchronized(sharedLock) {
+		for (int i = 0; i < jm.message.length(); i++) {
+			System.out.print(jm.message.charAt(i));
+			Thread.currentThread().sleep(50);
+		}
+		System.out.println();
+	}
+}
+```
+
+### Thread Communication
+
+Multiple threads can communicate and notify each other of changes through the use of methods that the `Object` class provides.
+
+- `wait()` will put the current thread into a blocked state. Calling `wait()` again will release the lock otherwise will unlock when notified by another thread. We can only call `wait()` from a method which has a lock (a synchronized method)
+- `notify()` sends a wake-up call to a single blocked thread
+- `notifyAll()` sends a wake-up call to all blocked threads
+
+### Fork and Join - recursive threading
+
+JDK 1.7 introduced a fork and join model for recursive threading. In this recursive threading model we fork the process into threads for lightweight asynchronous multithreading. These threads have the ability to fork, creating additional threads as needed. This recursive threading model makes use of thread pools to minimise overhead from creating additional threads.
+
+### Streams
+
+JDK 1.8 introduced `streams` which were designed for efficiently and flexibly applying operations to objects - including in parallel. Streams are probably the easiest way to parallelise independent operations over a collection in Java.
+
+```Java
+// Capitalise all strings in an array, in parallel
+
+private static void capitalise(ArrayList<StringBuffer> strings) {
+	strings.parallelStream().forEach(new Consumer<StringBuffer>()) {
+		@Override
+		public void accept(StringBuffer str) {
+			for (int i = 0; i < str.length(); i++) {
+				str.setCharAt(i, Character.toUpperCase(str.charAt(i)));
+			}
+		}
+	}
+}
+```
