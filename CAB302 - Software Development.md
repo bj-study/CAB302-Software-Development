@@ -19,7 +19,7 @@ Written by Brook Jeynes (Chooky) using the QUT course content and many other sou
 		<li><a href="#week9">Week 9</a>: Collections and Generics</li>
 		<li><a href="#week10">Week 10</a>: The Integrated Build</li>
 		<li><a href="#week11">Week 11</a>: Threads</li>
-		<li><a href="#week12">Week 12</a>: </li>
+		<li><a href="#week12">Week 12</a>: DevOps</li>
 		<li><a href="#week13">Week 13</a>: </li>
 	</ul>
 </ul>
@@ -2275,7 +2275,7 @@ JDK 1.7 introduced a fork and join model for recursive threading. In this recurs
 
 JDK 1.8 introduced `streams` which were designed for efficiently and flexibly applying operations to objects - including in parallel. Streams are probably the easiest way to parallelise independent operations over a collection in Java.
 
-```Java
+```java
 // Capitalise all strings in an array, in parallel
 
 private static void capitalise(ArrayList<StringBuffer> strings) {
@@ -2289,3 +2289,74 @@ private static void capitalise(ArrayList<StringBuffer> strings) {
 	}
 }
 ```
+
+<br />
+
+<h2 id="week12">Week 12: DevOps</h2>
+
+### Agile Again
+Let's take another quick look at Agile development. Agile development is a development cycle based around the concept of iterative sprints where at the end of each sprint there is a working product. With an iterative lifecycle, the software may not be complete but will be in a shippable state at the end of each sprint. Agile development talks about incorporating the client or customer into the decision making progress. This is easy when the product is being made under contract as there is an actual person who can be brought in to be show the development software. This however causes a small issue that agile fails to address, what happens when the customers are people buying the software off a store shelf or through some online service? There are various solutions to this problem, we could consider:
+1. Focus groups and testers from outside of the company
+2. Beta versions of the software can be released to the users
+
+Even this has its own problem as it only gives us an unrepresentative sample of the client, not the client itself. Another issue with agile occurs when a team may be in a state to produce working builds once per day, but due to the overhead of doing a formal release these become less often. In this instance the only real benefit gained is internal - the client isn't truly involved and for the most part will only see the impact of new features at release time.
+
+### Software Deployment
+Deployment is typically the last or second last stage in the lifecycle model. This can take many forms depending on the type of project:
+1. The delivery of software discs, hardware and boxes of documentation to the client company
+2. Sending the software to the distributor, where it will then be duplicated onto discs
+3. Submitting the software to an online distributor
+4. Uploading the software to a website
+
+### Web Applications and Software Deployment
+Most software lifecycles don't say much about the deployment of a product and remain pretty generalised as a whole. In the case of web applications however, the company developing the application is generally the company that is going to deploy the application. In an instance like this it's normal to deploy the application as soon as it begins running on the developers server. Although web applications are a good example of this nonstandard deployment model, there are many others that follow suit:
+- Massive multiplayer online games are a potential example 
+- User interaction doesn't need to be internet based, interactive displays at a museum may also be an example of such a model
+
+### Developers vs Operations
+So what is the difference between a software developer and an IT operation?
+
+#### Software Developers
+Software developers typically:
+- Gather requirements
+- Design
+- Program and test software in consultation with clients and stakeholders to ensure the correct software being created
+
+#### IT Operations
+- Administrate the server on which the software runs
+- Keep the software on the server up-to-date
+- Are the people who get the call if anything goes wrong (i.e. the server goes down)
+
+In old models, the developers would generally finish their release of the software, do what testing they could on their environments, and then send it along to operations for deployment on the organisation's servers. If there was an error with the software on the server the operations team typically wouldn't be able to do anything and would be forced to revert to an older working version and simply notify the developers. This then causes a problem because the software team typically didn't have the facilities needed to diagnose an error that could be caused on anything other than their environments.
+
+### DevOps
+This is where devops comes into play. DevOps, abbreviation for "Developers + Operations", is centered around bringing the developers and operations closer together. DevOps doesn't have a set of principles and is more often referred to as a culture due to it having different meanings for different companies. One company could see it as development and operations working together while another may see the two as the same thing. However, it does borrow many principles from Agile and applies them into different areas.
+
+### DevOps Pillars of Success
+- Reduce organisational silos
+- Accept failure as normal
+- Implement gradual changes
+- Leverage tooling and automation
+- Measure everything
+
+#### Reduce Organisational Silos
+Organisational silos is a term used to describe when different parts of an organisation are isolated and do not collaborate or share information between each other. Organisational silos are less efficient as the organisation is effectively working against itself.
+
+#### Accept Failure as Normal 
+Through the acceptance of failure as a part of developing and deploying software, DevOps organisations can anticipate and handle failure gracefully when it occurs. 
+
+#### Implement Gradual Changes 
+While agile promotes continuous integration, DevOps promotes continuous delivery. Smaller changes carry less risk and can be implemented and deployed much faster.
+
+#### Leverage Tooling and Automation 
+Menial tasks anywhere along the development deployment pipeline are automated, even if they are just as fast to do by hand. This reduces the risk of human error and ensures that DevOps engineers spend their time on knowledge work instead.
+
+#### Measure Everything
+A DevOps organisation will measure everything in the pipeline from software development to deployment. On top of keeping track of development progress and bug crushing, DevOps teams will measure and keep track of things like site performance, uptime, revenue, and more. This information gives DevOps engineers a bigger picture of how to most effectively target their development efforts.
+
+### Continuous Delivery 
+DevOps takes CI a step further by implementing Continuous Delivery. While an agile developer may have automated scripts to compile, build, and create an installer a DevOps deeloper might extend all of this to deploying the software right there on the production servers where everyone can use and test.
+
+While continuous integration is about making sure the software can build and run at anytime, not caring about if it can released. Continuous delivery requires that the software be deployable to the users at any given time. What this means is that in continuous delivery, the development team prioritises keeping the software fully functional at all times over developing new features. Continuous delivery also relies on the fact that Operations is happy enough with the build, testing, and deployment procedure that they will allow any version of the software to go through. This means that continuous delivery is impossible with organisational silos in place. 
+
+In continuous delivery there is a heavy emphasis on automation, everything up until the final deployment to production should be fully automated while still making the final deployment as simple as pressing a button. It's because of this that the maintenance of testing and CD scripts becomes vitally important. If a build script fails, produces corrupt outputs or lets bugs through into the CI environment then the development is inconvenienced. If the build scripts stop working or fail in a CD environment then the whole project is forced to stop until it is fixed.
