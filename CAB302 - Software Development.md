@@ -920,7 +920,7 @@ Due to Git being so large with many commands that each do different things I sim
 
 ### Assertions
 
-An assertion in Java is a statement that allows us to check the correctness of an assumption. That is to say, if the program is working correctly out assertion is true and if there is an error our assertion is false. Assertions in Java are turned off by default so we need to turn them on. Inside of IntelliJ we can do this by editing our run configuration -> Modify options -> Add VM options -> and then type "-ea" (--enableassertions) inside of the new VM input box that shows up.
+An assertion in Java is a statement that allows us to check the correctness of an assumption. That is to say, if the program is working correctly our assertion is true and if there is an error our assertion is false. Assertions in Java are turned off by default so we need to turn them on. Inside of IntelliJ we can do this by editing our run configuration -> Modify options -> Add VM options -> and then type "-ea" (--enableassertions) inside of the new VM input box that shows up.
 
 We can use assertions in java using the `assert` keyword and can be used in replacement to error checking print statements and allow errors to be trapped at their source. There are two ways we can create an assertion:
 
